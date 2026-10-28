@@ -29,13 +29,13 @@ const res = []; const ok = (name, cond, detail) => { res.push(!!cond); console.l
   console.log(JSON.stringify(r));
   ok('bilan : conseil sur le coup le plus subi (fente)', /fentes/.test(r.advice) && r.rows.length === 4, r.advice);
   ok('salut joué avant la manche, puis combat normal', r.salut[0] === 'cine' && r.salut[1] === 'cine' && r.after[0] === 'fight' && r.after[1] !== 'cine' && r.after[2] !== 'cine', { s: r.salut, a: r.after });
-  ok('les 10 chapitres et 6 récits ont leur mise en scène (bulles)', r.scenes.length === 16 && r.scenes.every(s => s.bub > 0), r.scenes.map(s => s.id + ':' + s.bub + '/' + s.npc));
+  ok('les 10 chapitres, 6 récits et 8 chapitres des Livres II et III ont leur mise en scène (bulles)', r.scenes.length === 32 && r.scenes.every(s => s.bub > 0), r.scenes.map(s => s.id + ':' + s.bub + '/' + s.npc));
   ok('figurants présents (maître Lacombe, frère Tancrède…)', r.scenes.filter(s => s.npc > 0).length >= 4, r.scenes.map(s => s.npc));
   ok('carnet : entrée débloquée en combat et sauvegardée', r.codex.includes('stoccata') && r.codexSaved, r.codex);
   ok('réaction selon la zone : touche basse → jambe, genou qui plie', r.zone === 'jambe' && r.hitPy < 75, { z: r.zone, py: r.hitPy });
   ok('chute selon le coup final : jambe → reste à genoux', r.ko.style === 'genou' && r.ko.py > 40 && r.ko.py < 60, r.ko);
   ok('boss : deuxième souffle sous 50 %, style durci, une seule fois', r.boss.p2 && r.boss.heavy > 2 && r.boss.again === 0, r.boss);
-  ok('16 leçons, défi vérifié', r.lessons === 16 && r.lessonCh2, r.lessons);
+  ok('32 leçons, défi vérifié', r.lessons === 32 && r.lessonCh2, r.lessons);
   console.log(errs.length ? 'ERREURS ' + JSON.stringify(errs.slice(0, 3)) : 'aucune erreur'); ok('aucune erreur JavaScript', errs.length === 0);
   console.log(`${res.filter(Boolean).length}/${res.length} tests réussis`); await b.close();
 })();

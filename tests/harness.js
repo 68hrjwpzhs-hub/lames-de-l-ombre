@@ -5,7 +5,7 @@ T0_realHero = curHero; curHero = () => ({ name: 'Vous', resist: 1, speed: 1, dmg
 window.T = { realHero: T0_realHero,
   ev: [],
   setup(dist = 220, level = 'duelliste') {
-    G.silent = true; G.level = level; G.forceWeather = 'clear'; G.startMatch(); G.weather = 'clear'; G.guet = false; G.state = 'fight'; G.banner = null; G.mode = 'duel'; G.timer = 999;
+    G.silent = true; G.level = level; G.forceWeather = 'clear'; G.startMatch(); G.p.offhand = G.e.offhand = null; G.weather = 'clear'; G.guet = false; G.state = 'fight'; G.banner = null; G.mode = 'duel'; G.timer = 999;
     G.ai = { think() {}, onEvent: (t, i) => T.ev.push({ t, i, time: G.time }) };
     G.p.rapier = G.e.rapier = RAPIERS.garnison; // mécanique de référence : rapières identiques
     T.ev = []; T.inputOn = false; G.p.x = 300; G.e.x = 300 + dist; G.p.slow = 1; G.e.slow = 1;

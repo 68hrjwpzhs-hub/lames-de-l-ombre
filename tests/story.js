@@ -33,7 +33,7 @@ const res = []; const ok = (name, cond, detail) => { res.push(!!cond); console.l
     return o;
   });
   console.log(JSON.stringify(r).slice(0, 1500));
-  ok('écran Histoire : 10 chapitres et 6 récits, 15 verrouillés au départ', r.listOpen && r.locked === 15, r.locked);
+  ok('écran Histoire : 10 chapitres, 6 récits et 8 chapitres du Livre II, 31 verrouillés au départ', r.listOpen && r.locked === 31, r.locked);
   ok('les 10 chapitres se jouent de bout en bout', r.chapters.every(c => /:\d/.test(c)), r.chapters);
   ok('héros imposés et lieux des chapitres respectés', r.heroes[0] === 'vaucelles' && r.heroes.includes('isaure') && r.heroes.includes('libre') && r.venues.includes('eglise') && r.venues.includes('loggia'), [r.heroes.slice(0, 4), r.venues.slice(0, 4)]);
   ok('adversaires signature présents', ['Don Gaspar de Lerín', 'Ombeline Vasseur', 'Le marquis de Brévannes', 'Le Chevalier d\'Écaille', 'Capitaine de Rouvray'].every(n => r.foes.includes(n)), r.foes);

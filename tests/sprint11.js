@@ -4,7 +4,7 @@ const res = []; const ok = (name, cond, detail) => { res.push(!!cond); console.l
 (async () => {
   const { b, pg, errs } = await open({ device: 'iPhone 13 landscape' }); await pg.waitForTimeout(600);
   await pg.addScriptTag({ content: fs.readFileSync(__dirname + '/harness.js', 'utf8') });
-  const r = await pg.evaluate(() => {
+  const r = await pg.evaluate(() => { GL.set(false); // mesures du rendu 2D seul (le moteur WebGL a ses propres tests)
     const o = {}; G.frame = () => {};
     // 1. rendu par défaut sur écran tactile : direct ; temps de rendu
     o.mode0 = Paint.mode; T.setup(230); G.venue = 'salle'; for (let i = 0; i < 30; i++) G.render(1 / 60);

@@ -1,6 +1,6 @@
 const { open } = require('./lib');
 (async () => {
-  const { b, ctx, pg, errs } = await open({ device: 'iPhone 13 landscape' });
+  const { b, ctx, pg, errs } = await open({ device: 'iPhone 13 landscape', file: process.argv[2] });
   const cdp = await ctx.newCDPSession(pg); await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
   await pg.tap('#go'); await pg.waitForFunction('G.state==="fight"', null, { timeout: 8000 });
   const r = await pg.evaluate(() => new Promise(res => { const ts = []; const of = G.render.bind(G), os = G.step.bind(G); let st = 0, rt = 0, n = 0;
