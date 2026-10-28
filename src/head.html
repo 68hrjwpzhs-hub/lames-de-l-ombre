@@ -1,0 +1,343 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Les Lames de l'Ombre</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:wght@400;700;800&display=swap">
+<style>
+/* Scène 16:9 centrée (letterbox), menus en surimpression, commandes tactiles aux deux pouces */
+:root{
+  --ink:#0c0b10; --parch:#efe4c8; --muted:#a79c86; --gold:#d8b25e; --blood:#b8352c; --steel:#c9d6e2;
+  --display:'IM Fell English SC',Georgia,'Times New Roman',serif; --body:'Alegreya Sans','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+#saveCode{-webkit-user-select:text;user-select:text;touch-action:manipulation;-webkit-touch-callout:default}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--ink);color:var(--parch);font-family:var(--body);overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#c{display:block;background:#000;position:relative;z-index:1}
+#vig{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;pointer-events:none;background-repeat:no-repeat,repeat;animation:vigGrain .27s steps(4) infinite}
+@keyframes vigGrain{0%{background-position:0 0,0 0}100%{background-position:0 0,-284px -436px}}
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,rgba(12,11,16,.55),rgba(12,11,16,.9))}
+.card{width:min(600px,92vw);max-height:92vh;max-height:92dvh;overflow:auto;touch-action:pan-y;box-sizing:border-box;padding:20px 24px;display:flex;flex-direction:column;gap:12px;
+  background:linear-gradient(180deg,rgba(28,22,20,.93),rgba(16,13,14,.95));border:1px solid rgba(216,178,94,.35);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(36px,7vw,58px);line-height:.95;margin:0;color:#f6ead0}
+h1 em{font-style:normal;color:var(--gold)}
+h2{font-family:var(--display);font-weight:400;font-size:36px;margin:0}
+h3{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:2px 0 0;font-weight:700}
+p{margin:0;line-height:1.45;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.opt{flex:1 1 120px;padding:8px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(239,228,200,.18);color:var(--parch);font:inherit;text-align:left;cursor:pointer;border-radius:3px;min-height:44px}
+.opt b{display:block;font-family:var(--display);font-weight:400;font-size:18px}
+.opt span{font-size:12.5px;color:var(--muted)}
+.opt[aria-pressed="true"]{border-color:var(--gold);background:rgba(216,178,94,.14)}
+.opt.small{flex:0 1 auto;min-height:36px;padding:6px 12px;font-size:14px}
+.btn{padding:12px 18px;border:1px solid var(--gold);background:rgba(216,178,94,.18);color:#fff3d6;font:800 16px var(--body);letter-spacing:.06em;cursor:pointer;border-radius:3px;min-height:44px}
+.btn.ghost{background:transparent;border-color:rgba(239,228,200,.3);font-weight:700}
+.keys{font-size:13px;color:var(--muted);line-height:1.7}
+.keys b{color:var(--parch)}
+kbd{border:1px solid rgba(239,228,200,.3);border-bottom-width:2px;padding:0 5px;border-radius:3px;font:700 12px var(--body);color:var(--parch)}
+details{border-top:1px solid rgba(239,228,200,.12);padding-top:8px}
+summary{cursor:pointer;color:var(--parch);font-weight:700;font-size:14px;letter-spacing:.04em;min-height:28px}
+.moves{display:grid;grid-template-columns:auto auto 1fr;gap:5px 12px;font-size:13.5px;margin-top:8px;align-items:baseline}
+.moves .k{color:var(--gold);font-weight:700;white-space:nowrap}
+.moves .n{color:var(--parch);white-space:nowrap}
+.moves span{color:var(--muted)}
+/* carrière : tournois, marché */
+.purse{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.purse b{color:#f6d77a;font-size:18px;font-family:var(--display);font-weight:400}
+.coin{display:inline-block;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff2b0,#d8b25e 55%,#8a6a20);vertical-align:-1px;margin-right:4px}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{border:1px solid rgba(239,228,200,.16);background:rgba(255,255,255,.03);padding:10px 12px;border-radius:3px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.item.locked{opacity:.5}
+.item .main{flex:1 1 260px;min-width:0}
+.item h4{margin:0;font-family:var(--display);font-weight:400;font-size:20px;color:var(--parch)}
+.item .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border:1px solid rgba(216,178,94,.4);color:var(--gold);border-radius:2px;margin-left:6px;vertical-align:2px}
+.stats{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:11.5px;color:var(--muted);margin-top:6px;max-width:300px}
+.bar{height:6px;background:rgba(239,228,200,.12);border-radius:3px;overflow:hidden;align-self:center}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#8a6a20,#f0c860)}
+.price{text-align:right;min-width:96px}
+.price b{font-family:var(--display);font-weight:400;font-size:20px;color:#f6d77a}
+.up{color:#e0806a}.down{color:#8fd08a}
+.btn.small{padding:8px 12px;font-size:14px;min-height:38px}
+.bracket{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}
+.bracket div{flex:1 1 140px;border:1px solid rgba(239,228,200,.16);padding:8px 10px;border-radius:3px;font-size:13px;color:var(--muted)}
+.bracket div.now{border-color:var(--gold);background:rgba(216,178,94,.12);color:var(--parch)}
+.bracket div.done{color:#8fd08a}
+.bracket b{display:block;font-family:var(--display);font-weight:400;font-size:17px;color:var(--parch)}
+.reward{color:#f6d77a;font-size:15px}
+.boons{flex-direction:row;flex-wrap:wrap}
+.opt.boon{flex:1 1 150px;min-height:92px;border-color:rgba(216,178,94,.45);background:linear-gradient(180deg,rgba(216,178,94,.12),rgba(255,255,255,.02))}
+.opt.boon:hover,.opt.boon:focus-visible{border-color:var(--gold);background:rgba(216,178,94,.22)}
+.runSteps{flex-wrap:nowrap}.runSteps div{flex:1 1 0;min-width:0;padding:4px 6px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.runSteps b{font-size:15px}
+#overGrade{font-family:var(--display);font-size:64px;line-height:1;color:#a79c86;text-align:right;margin-top:-8px}
+#overGrade[data-g="S"]{color:#ffd76a;text-shadow:0 0 18px rgba(255,200,90,.6)}#overGrade[data-g="A"]{color:#a8dca0}#overGrade[data-g="B"]{color:#9cc8ee}
+/* choix du héros */
+#creator .card{width:min(880px,94vw)}
+.crWrap{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.crPrev{flex:0 0 240px;position:sticky;top:0;display:flex;flex-direction:column;gap:8px}
+#crCanvas{width:240px;height:290px;border:1px solid rgba(216,178,94,.3);border-radius:3px;background:#2a2230}
+.heroSide{flex:1 1 320px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.heroList{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.opt.hero{min-height:52px}.opt.hero b{font-size:16px}
+#heroInfo h4{margin:0;font-family:var(--display);font-weight:400;font-size:22px;color:var(--parch)}
+#heroInfo .stats{max-width:none;grid-template-columns:auto 1fr;font-size:12.5px}
+@media (max-width:620px),(max-height:430px){.crPrev{flex:0 0 150px}#crCanvas{width:150px;height:200px}}
+/* tactile */
+#touch{position:fixed;inset:0;pointer-events:none}
+#stickZone{position:absolute;left:0;top:22%;bottom:0;width:46%;pointer-events:auto;touch-action:none}
+#stickBase{position:absolute;width:132px;height:132px;margin:-66px 0 0 -66px;border-radius:50%;border:2px solid rgba(239,228,200,.28);background:rgba(10,9,12,.35);left:calc(max(14px,env(safe-area-inset-left)) + 100px);top:calc(100% - 112px);transition:opacity .15s;opacity:.55}
+#stickBase.on{opacity:1}
+#stickBase::before,#stickBase::after{content:'';position:absolute;left:50%;top:50%;background:rgba(239,228,200,.14)}
+#stickBase::before{width:1px;height:100%;top:0}
+#stickBase::after{height:1px;width:100%;left:0}
+#stickKnob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:rgba(239,228,200,.78)}
+#stickHint{position:absolute;left:max(14px,env(safe-area-inset-left));bottom:max(6px,env(safe-area-inset-bottom));font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);max-width:42vw;line-height:1.3}
+.tb{position:absolute;pointer-events:auto;touch-action:none;border-radius:50%;border:2px solid rgba(239,228,200,.35);background:rgba(10,9,12,.42);color:var(--parch);padding:0;
+  font:800 15px var(--body);letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.05;transition:transform .05s,background-color .08s}
+.tb small{display:block;font-weight:400;font-size:10px;color:var(--muted);letter-spacing:.05em;margin-top:2px}
+.tb.down{transform:scale(.92);background:rgba(216,178,94,.45);border-color:var(--gold)}
+#bAtk{right:calc(max(14px,env(safe-area-inset-right)) + 0px);bottom:calc(max(12px,env(safe-area-inset-bottom)) + 10px);width:104px;height:104px;border-color:rgba(184,53,44,.9);font-size:17px}
+#bGuard{right:calc(max(14px,env(safe-area-inset-right)) + 116px);bottom:calc(max(12px,env(safe-area-inset-bottom)) + 0px);width:96px;height:96px;border-color:rgba(201,214,226,.7)}
+#bFeint{right:calc(max(14px,env(safe-area-inset-right)) + 18px);bottom:calc(max(12px,env(safe-area-inset-bottom)) + 126px);width:78px;height:78px}
+#bEsq{right:calc(max(14px,env(safe-area-inset-right)) + 128px);bottom:calc(max(12px,env(safe-area-inset-bottom)) + 108px);width:82px;height:82px;border-color:rgba(150,200,230,.75);font-size:14px}
+#bEsq.cool{opacity:.45}
+#ripRing{position:absolute;inset:-3px;border-radius:50%;border:3px solid #f6ead0;pointer-events:none;transform:scale(1.8);opacity:.9}
+#bAtk:not(.rip) #ripRing{display:none}
+#over .card{position:relative}#over #overGrade{position:absolute;top:12px;right:22px;margin:0;font-size:54px}@media (max-height:430px){#over h2{font-size:28px}#over .card{gap:7px}}
+.mn-card{width:min(980px,96vw)}.mn-book{display:grid;grid-template-columns:minmax(170px,30%) 1fr;gap:12px;min-height:0}.mn-list{display:flex;flex-direction:column;gap:5px;max-height:58vh;overflow:auto;padding-right:4px}.mn-list>*,.mn-list>.opt{flex:0 0 auto}.mn-book{flex-shrink:0}.mn-list .eyebrow{margin-top:4px}.mn{text-align:left}.mn.locked{opacity:.6}.mn span{display:block;font-size:11px;color:var(--muted)}.mn-page{display:flex;flex-direction:column;gap:6px}.mn-page canvas{width:100%;height:auto;max-height:46vh;object-fit:contain;border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,.5)}.mn-page b{font-family:var(--display);font-weight:400;font-size:22px;color:#f6ead0}.mn-page p{margin:0;font-size:14px;line-height:1.4}
+@media (max-height:430px){.mn-card h2{font-size:24px}.mn-card{gap:6px}.mn-page b{font-size:18px}.mn-page p{font-size:13px}}
+.mtabs{display:flex;gap:4px;border-bottom:1px solid rgba(216,178,94,.35);margin-bottom:4px}.mtabs button{flex:1;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font:800 13px var(--body);letter-spacing:.08em;text-transform:uppercase;padding:8px 4px;cursor:pointer}.mtabs button[aria-selected=true]{color:var(--gold);border-bottom-color:var(--gold)}.mpanel{display:flex;flex-direction:column;gap:10px}.mpanel[hidden]{display:none}
+.cx-row{display:flex;flex-wrap:wrap;gap:6px}.cx{flex:1 1 30%;min-width:150px;text-align:left}.cx.locked{opacity:.55}.cx span{display:block;font-size:11px;color:var(--muted)}.cx-read{border-left:3px solid var(--gold);background:rgba(216,178,94,.08);padding:8px 12px}.cx-read b{font-family:var(--display);font-weight:400;font-size:22px;color:#f6ead0}.cx-read p{margin:4px 0 0;font-size:14.5px;line-height:1.4}
+body.bigtext .card,body.bigtext #scene .sbox{zoom:1.12}body.bigbtn #touch .tb{transform:scale(1.12)}body.bigbtn #touch .tb.down{transform:scale(1.03)}body.cueshape #bGuard.cue{outline:4px dashed #fff;outline-offset:3px}
+.welcome{border:1px solid var(--gold);background:rgba(216,178,94,.1);padding:10px 12px;border-radius:4px;display:flex;flex-direction:column;gap:6px}.welcome b{font-family:var(--display);font-weight:400;font-size:22px;color:#f6ead0}.welcome span{font-size:14px}
+#overBilan{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:4px 0 2px}#overBilan .b{background:rgba(255,255,255,.05);border:1px solid rgba(216,178,94,.25);border-radius:4px;padding:3px 4px;text-align:center}#overBilan .b b{display:block;font-size:16px;color:var(--parch)}#overBilan .b span{font-size:11px;color:var(--muted)}#overBilan .tip{grid-column:1/-1;font-size:13px;line-height:1.3;color:#f2e2b8;text-align:left;padding:6px 8px;border-left:3px solid var(--gold);background:rgba(216,178,94,.08)}
+#bAtk.rip{animation:ripPulse .3s ease-in-out infinite alternate}
+@keyframes ripPulse{from{box-shadow:0 0 0 0 rgba(255,215,106,.7)}to{box-shadow:0 0 0 12px rgba(255,215,106,0)}}
+#bPause{position:absolute;left:50%;transform:translateX(-50%);bottom:max(8px,env(safe-area-inset-bottom));pointer-events:auto;width:52px;height:34px;border:1px solid rgba(239,228,200,.3);background:rgba(10,9,12,.5);color:var(--parch);border-radius:3px;font-size:12px}
+#demoBar{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));display:flex;gap:8px}
+#rotate{position:fixed;inset:0;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px}
+#rotate b{font-family:var(--display);font-weight:400;font-size:32px}
+@media (max-height:360px){#bEsq{width:72px;height:72px;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 96px);right:calc(max(14px,env(safe-area-inset-right)) + 112px)}#bAtk{width:92px;height:92px}#bGuard{width:84px;height:84px;right:calc(max(14px,env(safe-area-inset-right)) + 104px)}#bFeint{width:68px;height:68px;bottom:calc(max(12px,env(safe-area-inset-bottom)) + 112px)}#stickHint{font-size:9.5px}}
+@media (max-height:430px){.card{padding:14px 18px;gap:9px}h1{font-size:34px}.lede{display:none}.opt b{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.tb{transition:none}}
+
+/* HUD v2 : retour visuel sur les boutons (charge, parade, riposte), pause en haut à droite, mode gaucher */
+#bAtk{background:conic-gradient(rgba(240,179,124,.55) var(--charge,0deg),rgba(10,9,12,.42) 0)}
+#bAtk .r{display:none;font-size:17px;font-weight:800;letter-spacing:.06em}
+#bAtk.rip{border-color:var(--gold);background:rgba(216,178,94,.4)}#bAtk.rip .a{display:none}#bAtk.rip .r{display:block}
+#bAtk.rip.gold{background:rgba(255,215,106,.78);color:#2a1a08}
+#bGuard.cue{border-color:#ff5a46;box-shadow:0 0 0 3px rgba(255,255,255,.85),0 0 18px 4px rgba(255,70,50,.75)}
+#bPause{left:auto;transform:none;right:calc(max(8px,env(safe-area-inset-right)) + 0px);top:max(6px,env(safe-area-inset-top));bottom:auto;width:44px;height:44px;border-radius:6px;font-size:16px}
+body.lefty #stickZone{left:auto;right:0}
+body.lefty #stickBase{left:auto;right:calc(max(14px,env(safe-area-inset-right)) + 34px)}
+body.lefty #bAtk{right:auto;left:calc(max(14px,env(safe-area-inset-left)) + 0px)}
+body.lefty #bGuard{right:auto;left:calc(max(14px,env(safe-area-inset-left)) + 116px)}
+body.lefty #bFeint{right:auto;left:calc(max(14px,env(safe-area-inset-left)) + 18px)}
+body.lefty #bEsq{right:auto;left:calc(max(14px,env(safe-area-inset-left)) + 128px)}
+body.lefty #stickHint{left:auto;right:max(14px,env(safe-area-inset-right));text-align:right}
+body.lefty #bPause{right:auto;left:max(8px,env(safe-area-inset-left))}
+#bReplay{position:absolute;pointer-events:auto;top:max(58px,calc(env(safe-area-inset-top) + 58px));left:50%;transform:translateX(-50%);min-height:44px;padding:0 16px;border:1px solid var(--gold);background:rgba(10,9,12,.72);color:#fff3d6;font:800 14px var(--body);letter-spacing:.06em;border-radius:22px;animation:ripPulse .6s ease-in-out infinite alternate}
+
+/* mode Histoire : liste des chapitres, scènes dialoguées en bas de l'écran */
+.chaps{display:flex;flex-direction:column;gap:6px}
+.opt.chap{display:grid!important;grid-template-columns:1fr auto;gap:0 12px;text-align:left;align-items:center;min-height:44px;padding:7px 12px!important}
+.opt.chap b{font-size:16px!important}
+.opt.chap b{grid-column:1}.opt.chap span{grid-column:1;font-size:12px;color:var(--muted)}.opt.chap .stars{grid-column:2;grid-row:1/3;font-style:normal;color:var(--gold);letter-spacing:.1em}
+.opt.chap:disabled{opacity:.45}
+#storyBottes .opt{text-align:left;max-width:260px}#storyBottes .opt span{display:block;font-size:11.5px;color:var(--muted)}
+#scene{position:fixed;left:0;right:0;bottom:0;top:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:0 max(16px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));pointer-events:auto;touch-action:manipulation}
+#scene .sbox{width:min(780px,100%);box-sizing:border-box;background:linear-gradient(rgba(14,11,14,.9),rgba(10,8,10,.97));border:1px solid rgba(216,178,94,.7);border-radius:6px;padding:10px 16px 8px;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+#scene.bub .sbox{display:none}
+#scene.narr{align-items:flex-start;padding-top:max(8px,env(safe-area-inset-top))}#scene.narr .sbox{padding:6px 14px 5px;background:linear-gradient(rgba(14,11,14,.82),rgba(10,8,10,.88))}#scene.narr #sceneText{min-height:0;font-size:15px}#scene.narr .seye{margin-bottom:2px}
+#scene .seye{font:800 10.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+#scene .who{display:flex;align-items:center;gap:8px;min-height:24px}
+#sceneCrest{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--gold);display:inline-flex;align-items:center;justify-content:center;font:700 15px var(--display);font-style:normal;color:#f4ead2}
+#sceneName{font:20px var(--display);color:#f4ead2}
+#sceneText{font:600 17px/1.35 var(--body);color:#efe4c8;margin:6px 0 4px;min-height:2.7em}
+#sceneText.narr{font-style:italic;color:#d8cfb8}
+#sceneTap{display:block;text-align:right;font:700 11px var(--body);color:var(--muted);letter-spacing:.06em}
+#sceneChoices .btn{flex:1;display:flex;flex-direction:column;gap:2px;text-align:left}#sceneChoices .btn small{font:600 12px var(--body);color:#d8cfb8;letter-spacing:0}
+#sceneSkip{position:absolute;top:max(8px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));min-height:44px;min-width:88px;border:1px solid rgba(239,228,200,.4);background:rgba(10,9,12,.6);color:var(--parch);font:800 14px var(--body);border-radius:22px}
+@media (max-height:430px){#sceneText{font-size:16px;min-height:2.6em}#scene .sbox{padding:8px 14px 6px}}
+</style>
+
+<div id="stage"><canvas id="c" aria-label="Duel"></canvas><div id="vig" hidden></div></div>
+
+<div id="touch" hidden>
+  <div id="stickZone"><div id="stickBase"><div id="stickKnob"></div></div><div id="stickHint">2× ← / → : pas rapide</div></div>
+  <button class="tb" id="bAtk"><span class="a">ATTAQUE<small>maintenir : lourde</small></span><span class="r">RIPOSTE</span><i id="ripRing"></i></button>
+  <button class="tb" id="bGuard">GARDE<small>maintenir</small></button>
+  <button class="tb" id="bFeint">FEINTE</button>
+  <button class="tb" id="bEsq" aria-label="Esquive">ESQUIVE<small>au dernier instant</small></button>
+  <button id="bPause" aria-label="Pause">❚❚</button>
+  <button id="bReplay" hidden>↺ Revoir</button>
+</div>
+
+<div id="demoBar" hidden><button class="btn ghost" id="demoNext">Suivant</button><button class="btn ghost" id="demoQuit">Quitter</button></div>
+
+<section class="screen" id="menu">
+  <div class="card">
+    <div class="eyebrow">Paris, 1633 · duel à la rapière</div>
+    <h1>Les Lames de l'<em>Ombre</em></h1>
+    <div class="purse" id="purse"></div>
+    <div class="row"><button class="btn" id="goStory">Histoire</button><button class="btn" id="goRun">Nuit de Paris</button><button class="btn ghost" id="goTour">Tournois</button><button class="btn ghost" id="goMarket">Marché aux rapières</button><button class="btn ghost" id="goChar">Héros</button><button class="btn ghost" id="goCodex">Carnet</button><button class="btn ghost" id="goManus">Manuscrit</button></div>
+    <h3>Duel libre et entraînement</h3>
+    <p class="lede">Tenez la mesure, lisez l'attaque, levez la garde au dernier instant, puis frappez : après une parade parfaite ou une esquive, Attaque devient Riposte.</p>
+    <div class="row" id="lvls">
+      <button class="opt" data-v="debutant" aria-pressed="false"><b>Débutant</b><span>lent, prévisible</span></button>
+      <button class="opt" data-v="duelliste" aria-pressed="true"><b>Duelliste</b><span>varie le rythme</span></button>
+      <button class="opt" data-v="maitre" aria-pressed="false"><b>Maître</b><span>mesure et feintes</span></button>
+      <button class="opt" data-v="training" aria-pressed="false"><b>Entraînement</b><span>exercices guidés</span></button>
+    </div>
+    <div id="exBox" hidden>
+      <h3>Exercice</h3>
+      <div class="row" id="exs"></div>
+      <p id="exDesc" style="margin-top:6px"></p>
+    </div>
+    <div class="row"><button class="btn" id="go">Duel libre</button><button class="btn ghost" id="demo">Démonstration</button></div>
+    <div class="row" style="align-items:center"><span class="keys" style="min-width:110px">Décor</span><div class="row" id="venues"></div></div>
+    <div class="row" style="align-items:center"><span class="keys" style="min-width:110px">Options</span><div class="row" id="audioOpts">
+        <button class="opt small" id="optBreath" aria-pressed="true">Souffle</button><button class="opt small" id="optCutin" aria-pressed="true">Portraits</button><button class="opt small" id="optFin" aria-pressed="true">Finales</button><button class="opt small" id="optText" aria-pressed="false">Texte plus grand</button><button class="opt small" id="optBig" aria-pressed="false">Gros boutons</button><button class="opt small" id="optCue" aria-pressed="false">Signal de parade visible</button><button class="opt small" id="optLefty" aria-pressed="false">Gaucher</button><button class="opt small" id="optSave" aria-pressed="false">Sauvegarde</button><button class="opt small" id="optPerf" aria-pressed="false">Mesure</button><button class="opt small" id="optMusic" aria-pressed="true">Musique</button><button class="opt small" id="optSfx" aria-pressed="true">Bruitages</button><button class="opt small" id="optBlood" aria-pressed="true">Sang</button><button class="opt small" id="optPaint" aria-pressed="true">Rendu cinéma</button></div></div>
+    <div class="row" style="align-items:center"><span class="keys" style="min-width:110px">Difficulté de la parade</span>
+      <div class="row" id="pw">
+        <button class="opt small" data-v="large" aria-pressed="false">Facile</button>
+        <button class="opt small" data-v="normale" aria-pressed="true">Normal</button>
+        <button class="opt small" data-v="stricte" aria-pressed="false">Difficile</button>
+      </div>
+    </div>
+    <details id="help">
+      <summary>Coups, gardes et commandes</summary>
+      <div class="moves">
+        <span class="k">Attaque</span><span class="n">Estocade <i>· stoccata</i></span><span>rapide, courte récupération, ligne dehors</span>
+        <span class="k">→ + Attaque</span><span class="n">Fente</span><span>longue portée, punissable si elle manque</span>
+        <span class="k">↓ + Attaque</span><span class="n">Estocade basse</span><span>vise la jambe et la hanche</span>
+        <span class="k">← + Attaque</span><span class="n">Dégagement</span><span>la pointe contourne la lame : ligne dedans</span>
+        <span class="k">↑ + Attaque</span><span class="n">Imbroccata</span><span>estoc plongeant par la ligne haute, plus lent</span>
+        <span class="k">Feinte, Attaque</span><span class="n">Feinte <i>· finta</i></span><span>l'estocade qui suit part presque sans préparation</span>
+        <span class="k">Attaque, Feinte</span><span class="n">Composée</span><span>menace dehors, change de ligne vers l'ouverture</span>
+        <span class="k">Attaque maintenue</span><span class="n">Fente lourde</span><span>grand arc : brise une garde tenue, très punissable si elle manque</span>
+        <span class="k">→ + Feinte</span><span class="n">Battement <i>· battuta</i></span><span>chasse la lame adverse (même en garde) : l'attaque qui suit part aussitôt</span>
+        <span class="k">↓ + Feinte</span><span class="n">Prise de fer <i>· atajo</i></span><span>domine la lame et file jusqu'au corps : passe la garde tenue, dévie les attaques directes</span>
+        <span class="k">← + Attaque</span><span class="n">Dérobement <i>· cavazione</i></span><span>contre un battement ou une prise de fer : la pointe passe sous la lame</span>
+        <span class="k">Attaque (dorée)</span><span class="n">Riposte <i>· risposta</i></span><span>après une parade parfaite ou une esquive réussie : 12, ou 18 si l'anneau épouse le cercle doré</span>
+        <span class="k">Esquive</span><span class="n">Esquive <i>· passata sotto, volte</i></span><span>au dernier instant : l'attaque passe à côté et Attaque devient Riposte. Dans le vide, on trébuche</span>
+        <span class="k">← pendant le retour de fente</span><span class="n">Reprise en arrière</span><span>on se remet en garde en reculant, plus vite</span>
+        <span class="k">Double → / ←</span><span class="n">Pas rapide</span><span>entrée explosive ou retraite, aussi après une attaque</span>
+      </div>
+      <p style="margin-top:8px;font-size:13px"><b style="color:var(--parch)">Une seule garde.</b> Tenue, elle bloque toutes les attaques sauf la fente lourde et les griffes, qui la brisent ; la lame suit d'elle-même la pointe adverse, en haut comme en bas. Levée juste avant la touche, c'est une parade parfaite (fenêtre de 0,32 s en Facile, 0,24 s en Normal, 0,14 s en Difficile) : la lame adverse est chassée d'un grand geste et le bouton Attaque devient Riposte pendant 0,45 s. En Facile et Normal, la pointe adverse rougeoie au moment où il faut lever la garde, et un anneau doré guide la riposte parfaite (zone de 0,10 à 0,30 s en Facile, 0,12 à 0,26 s en Normal, 0,13 à 0,22 s en Difficile). Marteler la garde n'ouvre aucune parade parfaite.</p>
+      <p style="margin-top:6px;font-size:13px"><b style="color:var(--parch)">Le fer.</b> Quand les lames se touchent au repos, le fer est engagé (« FER ENGAGÉ »). Fer engagé, maintenez → pour pousser sa lame : qui pousse le plus longtemps domine le fer (son prochain coup part plus lentement, le vôtre aussitôt). La garde perd contre le battement, la prise de fer et la fente lourde ; l'attaque directe perd contre l'opposition d'une prise de fer et contre la parade ; le battement et la prise de fer perdent contre le dérobement (dégagement, composée) et la retraite ; le dérobement perd contre la garde.</p>
+      <div class="keys" id="kbHelp" style="margin-top:6px">Clavier : <kbd>Q</kbd><kbd>D</kbd> ou <kbd>←</kbd><kbd>→</kbd> se déplacer · <kbd>Z</kbd>/<kbd>↑</kbd> haut · <kbd>S</kbd>/<kbd>↓</kbd> bas · <kbd>J</kbd> attaque (maintenir : lourde) · <kbd>K</kbd> feinte (→ battement, ↓ prise de fer) · <kbd>L</kbd> ou <kbd>Espace</kbd> garde · <kbd>I</kbd> riposte · <kbd>Échap</kbd> pause</div>
+    </details>
+    <div class="row" style="align-items:center;justify-content:space-between"><span class="keys" id="verLine">Version 1.0</span><button class="btn" id="pwaUpdate" hidden>Nouvelle version : mettre à jour</button></div>
+    <div class="keys" id="record"></div>
+  </div>
+</section>
+
+
+<section class="screen" id="tourney" hidden>
+  <div class="card">
+    <div class="eyebrow">Circuit des tournois</div><h2>Tournois</h2>
+    <div class="purse" id="purseT"></div>
+    <p>Trois duels à élimination directe, chacun en deux manches gagnantes. Le vainqueur emporte la bourse ; atteindre la finale rapporte une part.</p>
+    <div class="list" id="tourList"></div>
+    <div class="row"><button class="btn ghost" id="tourBack">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="bracket" hidden>
+  <div class="card">
+    <div class="eyebrow" id="brEye">Tournoi</div><h2 id="brTitle">Quart de finale</h2>
+    <div class="bracket" id="brSteps"></div>
+    <p id="brText"></p>
+    <div class="row"><button class="btn" id="brGo">En garde</button><button class="btn ghost" id="brQuit">Abandonner</button></div>
+  </div>
+</section>
+
+<section class="screen" id="market" hidden>
+  <div class="card">
+    <div class="eyebrow" id="mkEye">Rue de la Ferronnerie · jour 1</div><h2>Marché aux rapières</h2>
+    <div class="purse" id="purseM"></div>
+    <p>Les prix bougent après chaque duel et les lames rares ne sont pas toujours à l'étal. Revente : 55 % du cours du jour.</p>
+    <div class="list" id="mkList"></div>
+    <div class="row"><button class="btn ghost" id="mkBack">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="creator" hidden>
+  <div class="card">
+    <div class="eyebrow">Les lames de Son Éminence</div><h2>Choisir son héros</h2>
+    <div class="crWrap">
+      <div class="crPrev"><canvas id="crCanvas" aria-label="Aperçu du héros"></canvas></div>
+      <div class="heroSide"><div id="heroList" class="heroList"></div><div id="heroInfo"></div></div>
+    </div>
+    <div class="row"><button class="btn" id="crSave">Choisir ce héros</button><button class="btn ghost" id="crCancel">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="run" hidden>
+  <div class="card">
+    <div class="eyebrow">Une nuit, sept duels</div><h2 id="runTitle">Nuit de Paris</h2>
+    <div id="runBody"></div>
+    <div class="row"><button class="btn" id="runGo">Commencer la nuit</button><button class="btn ghost" id="runQuit">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="manus" hidden>
+  <div class="card mn-card"><div class="eyebrow">Traité de l'escrime</div><h2>Le manuscrit du duelliste</h2>
+    <div class="mn-book"><div id="manusList" class="mn-list"></div>
+      <div class="mn-page"><canvas id="manusPlate" width="640" height="400"></canvas><b id="manusTitle"></b><p id="manusText"></p><button class="btn" id="manusTrain" hidden>S'entraîner</button></div></div>
+    <div class="row"><button class="btn ghost" id="manusBack">Retour</button></div></div>
+</section>
+<section class="screen" id="codex" hidden>
+  <div class="card"><div class="eyebrow">Paris, 1633</div><h2>Le carnet du maître d'armes</h2><p class="keys" id="codexCount"></p>
+    <div id="codexRead" class="cx-read" hidden><b id="codexTitle"></b><p id="codexText"></p></div>
+    <div id="codexList"></div>
+    <div class="row"><button class="btn ghost" id="codexBack">Retour</button></div></div>
+</section>
+<section class="screen" id="story" hidden>
+  <div class="card"><div class="eyebrow">Mode Histoire</div><h2>Le Registre écarlate</h2>
+    <p class="lede" style="display:block">Paris, 1633. Le registre qui porte les vrais noms des lames secrètes du Cardinal a été volé. Dix chapitres pour le reprendre.</p>
+    <p id="storyNote" class="reward"></p>
+    <div id="storyList" class="chaps"></div>
+    <div class="eyebrow">Bottes secrètes (une seule portée, en Histoire et dans la Nuit de Paris)</div>
+    <div class="row" id="storyBottes"></div>
+    <p id="storyEnding" class="keys"></p>
+    <div class="row"><button class="btn ghost" id="storyBack">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="storyEnd" hidden>
+  <div class="card"><div class="eyebrow" id="seEye"></div><h2 id="seTitle"></h2><p id="seGoal"></p>
+    <div class="row"><button class="btn" id="seGo">Continuer</button><button class="btn ghost" id="seRetry">Réessayer</button><button class="btn ghost" id="seList">Chapitres</button></div></div>
+</section>
+
+<div id="scene" hidden>
+  <button id="sceneSkip" aria-label="Passer la scène">Passer ›</button>
+  <div class="sbox"><div class="seye" id="sceneEye"></div>
+    <div class="who"><i id="sceneCrest"></i><b id="sceneName"></b></div>
+    <p id="sceneText"></p><div id="sceneChoices" class="row"></div><small id="sceneTap">Touchez pour continuer</small></div>
+</div>
+
+<section class="screen" id="savebox" hidden>
+  <div class="card"><div class="eyebrow">Votre partie</div><h2>Sauvegarde</h2>
+    <p class="lede" style="display:block">Exportez votre partie pour la garder en lieu sûr ou la transférer vers la version installée sur l'iPhone. Le code contient votre progression, vos écus, vos rapières et vos réglages.</p>
+    <div class="row"><button class="btn" id="saveExport">Exporter</button><button class="btn ghost" id="saveCopy">Copier le code</button><button class="btn ghost" id="saveFile">Fichier</button></div>
+    <textarea id="saveCode" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Collez ici un code de sauvegarde (LDO1…) puis touchez Importer" style="width:100%;box-sizing:border-box;font:12px/1.35 ui-monospace,Menlo,monospace;background:rgba(0,0,0,.35);color:#efe4c8;border:1px solid rgba(216,178,94,.5);border-radius:3px;padding:8px;resize:vertical"></textarea>
+    <p id="saveInfo" class="keys" aria-live="polite" style="min-height:1.4em"></p>
+    <div class="row"><button class="btn" id="saveImport">Importer</button><button class="btn ghost" id="saveBack">Retour</button></div>
+  </div>
+</section>
+
+<section class="screen" id="pause" hidden>
+  <div class="card"><h2>Pause</h2><p id="pauseLesson" class="reward" hidden></p><div class="row"><button class="btn" id="resume">Reprendre</button><button class="btn ghost" id="pauseReplay" hidden>Revoir la dernière touche</button><button class="btn ghost" id="quit">Menu</button></div><details id="pauseMoves"><summary>Coups et commandes</summary><div class="moves" id="pauseMovesList"></div></details></div>
+</section>
+
+<section class="screen" id="over" hidden>
+  <div class="card"><div class="eyebrow" id="overEye">Fin du duel</div><h2 id="verdict">Victoire</h2><p id="overStats"></p><div id="overBilan"></div><p class="reward" id="overReward"></p><div id="overGrade" aria-label="Note de style"></div>
+    <div class="row"><button class="btn" id="again">Revanche</button><button class="btn ghost" id="overMenu">Menu</button></div></div>
+</section>
+
+<div id="rotate" hidden><b>Tournez l'iPhone</b><span>Le duel se joue en paysage.</span></div>
