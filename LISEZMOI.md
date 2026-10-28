@@ -1,4 +1,4 @@
-# Les Lames de l'Ombre — version installable 1.8.0
+# Les Lames de l'Ombre — version installable 4.0.0
 
 Mettre le jeu sur l'iPhone, une seule fois (environ 10 minutes, sans ligne de commande) :
 

@@ -1,5 +1,5 @@
 // service worker : tout le jeu en cache (hors ligne) ; une nouvelle version attend que le joueur la demande au menu
-const CACHE = 'ldo-1.8.0';
+const CACHE = 'ldo-4.0.0';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('ldo-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

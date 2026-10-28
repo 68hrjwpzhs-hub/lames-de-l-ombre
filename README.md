@@ -2,7 +2,7 @@
 
 Duels à la rapière dans le Paris de 1633, avec une touche de fantastique. Jeu web en 2D (Canvas), pensé pour l'iPhone en paysage et installable comme une application (PWA).
 
-Version 1.8.0.
+Version 4.0.0 (notes : `notes/v4.0.md`, `notes/v3.0.md`, `notes/v2.0.md`). Français et anglais. Moteur WebGL (lumière, halo, reflets) avec retour automatique au rendu 2D.
 
 ## Contenu du jeu
 
@@ -11,12 +11,20 @@ Version 1.8.0.
   - Parade au dernier instant puis riposte (le bouton Attaque devient Riposte), esquive (passe sous la lame ou volte).
   - Liement des lames et domination du fer, reprise en arrière.
   - Souffle, blessures localisées, finales automatiques propres à chaque personnage.
-- **Mode Histoire « Le Registre écarlate »** : 10 chapitres mis en scène, avec bulles, figurants et choix qui pèsent, plus 6 récits personnels.
-- **Nuit de Paris** (enchaînement de duels), tournois, entraînement guidé et initiation.
+  - Main gauche : dague, cape ou rondache, sans bouton de plus.
+- **Mode Histoire**
+  - « Le Registre écarlate » : 10 chapitres mis en scène, avec bulles, figurants et choix qui pèsent, plus 6 récits personnels.
+  - Livre II « Le Sel et la Cendre » : 8 chapitres, 3 nouveaux décors, 2 boss et deux fins.
+  - Livre III « Le Cercle de Madrid » : 8 chapitres, 3 décors madrilènes, 3 boss, fins selon vos choix.
+- **Cape et épée** : décors utilisables (tabouret, tonneau, table, lustre), jauge de panache, un contre plusieurs, joute verbale avant le duel.
+- **Paris** : carte des quartiers, missions du jour, réputation (honneur, crainte, faveur), déguisements, poursuites sur les toits, valet et compagne d'armes, armurier.
+- **Nuit de Paris** (enchaînement de duels), tournois, **Défi du jour**, **votre école d'escrime** (élèves qui se battent à votre place), entraînement guidé et initiation.
 - **Bibliothèque**
   - Le carnet du maître d'armes : encyclopédie historique, avec la légende du jeu séparée des faits.
   - Le manuscrit du duelliste : planches gravées des techniques maîtrisées, pages des adversaires, surnom.
-- **Accessibilité** : texte plus grand, gros boutons, signal de parade lisible sans les couleurs, mode gaucher.
+- **Finition** : 30 succès, nouvelle partie +, mode photo, 3 emplacements de sauvegarde.
+- **Commandes** : écran tactile, clavier, manette, gestes (option).
+- **Accessibilité** : texte plus grand, gros boutons, signal de parade lisible sans les couleurs, mode gaucher, sous-titres des sons, mode daltonien, mouvements réduits, duel lent.
 
 ## Construire
 
@@ -39,7 +47,7 @@ Avec un compte GitHub gratuit, GitHub Pages ne fonctionne que pour un dépôt **
 | Dossier | Contenu |
 |---|---|
 | `src/` | Code source : moteur, personnages, décors, IA, mode histoire, mise en scène, finales, carnet, manuscrit… L'ordre d'assemblage est dans `build.sh`. |
-| `tools/` | `pwa_build.py` construit la version installable ; `publish.sh` la place à la racine pour GitHub Pages. |
+| `tools/` | `pwa_build.py` et `publish.sh` (version installable) ; `i18n_*.py` (anglais) ; atelier Python : `decors_render.js` + `decors_hd.py` (décors HD), `textures.py` (étoffes), `mocap.py` (vidéo → poses), `visual_check.py` (contrôle visuel). |
 | `tests/` | Tests automatisés avec Playwright (`npm i` puis `node tests/suite.js`). |
 | `notes/` | Notes de conception et journal des versions. |
 
