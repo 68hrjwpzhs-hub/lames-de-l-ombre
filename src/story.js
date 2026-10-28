@@ -158,7 +158,7 @@ const STORY = [
 const Story = {
   cur: null, hero: null, flags: {}, choiceMods: null,
   data() { const d = Save.data; if (!d.story) d.story = { done: {}, boons: [], boonEquipped: null, choices: {}, ending: null }; return d.story; },
-  unlocked(i) { if (STORY[i].side) return !!this.data().done.ch10; return i === 0 || !!this.data().done[STORY[i - 1].id]; },
+  unlocked(i) { if (STORY[i].book) { const bk = STORY[i].book, j = STORY.findIndex(x => x.book === bk); return i === j ? !!this.data().done[bk === 2 ? 'ch10' : 'b08'] : !!this.data().done[STORY[i - 1].id]; } if (STORY[i].side) return !!this.data().done.ch10; return i === 0 || !!this.data().done[STORY[i - 1].id]; },
   filt(lines) { const S = this.data(); return lines.filter(l => !l.cond || l.cond(S)); }, // répliques qui dépendent de vos choix
   init() {
     // héros imposé par le chapitre (sinon le héros choisi)
@@ -229,9 +229,9 @@ const Story = {
     const c = this.cur, F = c.c.fights[c.fight], f = foeOf(F.foe), venue = F.venue || c.c.venue; c.phase = 'fight'; $('scene').hidden = true; Cine.end();
     const tw = Object.assign({}, f.tweak, this.choiceMods && this.choiceMods.aggr ? { aggr: (f.tweak && f.tweak.aggr || .5) + this.choiceMods.aggr } : {});
     // nuit enchaînée : la vie ne revient qu'en partie ; sans l'aide d'Ombeline (livrée au chapitre 5), on part entamé
-    const hp = !c.c.chain ? null : c.fight === 0 ? (this.data().choices.ch05 === 'livrer' ? 80 : 100) : Math.min(100, c.hp + 35);
+    const hp = !c.c.chain ? null : c.fight === 0 ? (c.c.startHp ? c.c.startHp(this.data()) : this.data().choices.ch05 === 'livrer' ? 80 : 100) : Math.min(100, c.hp + 35);
     G.storyGuet = !!F.guet; G.storyTimer = F.guet ? (F.timer || 60) + (this.choiceMods && this.choiceMods.guet || 0) : 999;
-    G.startMatch({ mode: 'story', venue, wins: F.wins || 2, hp, opp: { name: f.name, level: f.level, tweak: tw, arch: f.arch, rapier: f.rapier, look: f.look(), sig: f.sig, boss: { gaspar: 'fer', rouvray: 'force', brevannes: 'temps', ecaille: 'griffe', ombeline: 'feinte' }[F.foe] || null } });
+    G.startMatch({ mode: 'story', venue, wins: F.wins || 2, hp, opp: { name: f.name, level: f.level, tweak: tw, arch: f.arch, rapier: f.rapier, look: f.look(), sig: f.sig, boss: f.boss || { gaspar: 'fer', rouvray: 'force', brevannes: 'temps', ecaille: 'griffe', ombeline: 'feinte' }[F.foe] || null, ...('offhand' in f ? { offhand: f.offhand } : {}) } });
     const Ls = LESSONS[c.c.id]; this.lesson = Ls ? { L: Ls, t0: performance.now() } : null;
     G.banner = { text: c.c.title, sub: `${f.name}${c.c.fights.length > 1 ? ` · duel ${c.fight + 1}/${c.c.fights.length}` : ''}${c.c.goal && c.c.goal.label ? ' · ' + c.c.goal.label : ''}`, t: 0, dur: 2.4 };
   },

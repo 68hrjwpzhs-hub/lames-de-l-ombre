@@ -617,7 +617,8 @@ class Fighter {
     const sh = [neck[0] + d * 3, neck[1] + 6], bsh = [neck[0] - d * 5, neck[1] + 8];
     const e1 = v(p.a1, 31), el = [sh[0] + e1[0], sh[1] + e1[1]]; const e2 = v(p.a2, 28), wr = [el[0] + e2[0], el[1] + e2[1]];
     const e3 = v(p.a3, (this.rapier ? this.rapier.len : 112) * Math.cos((p.bz || 0) * DEG)), tip = [wr[0] + e3[0], wr[1] + e3[1]];
-    const f1 = v(p.b1, 30), bel = [bsh[0] + f1[0], bsh[1] + f1[1]]; const f2 = v(p.b2, 26), bwr = [bel[0] + f2[0], bel[1] + f2[1]];
+    let b1 = p.b1, b2 = p.b2; const OH = this.offhand && useFeet && p === this.pose && !NO_OFFH_STATES[this.state] && typeof OFFHANDS !== 'undefined' && OFFHANDS[this.offhand]; if (OH) { b1 = lerp(b1, OH.b1, .8); b2 = lerp(b2, OH.b2, .8); } // main gauche tenue en avant
+    const f1 = v(b1, 30), bel = [bsh[0] + f1[0], bsh[1] + f1[1]]; const f2 = v(b2, 26), bwr = [bel[0] + f2[0], bel[1] + f2[1]];
     const F = useFeet && this.feet;
     const leg = (fx, lift, side, ft) => { // IK à deux os, genou vers l'avant
       const hip = [gx + side * d * 4, gy + 4], foot = [ft ? ft.x : this.x + fx * d, GROUND - 4 - lift - (ft ? ft.lift : 0)];

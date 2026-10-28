@@ -1,5 +1,5 @@
 // =============================== version installable (PWA) : hors ligne, mise à jour proposée au menu seulement ===============================
-const GAME_VERSION = '1.8.0';
+const GAME_VERSION = '4.0.0';
 const PWA = {
   init() {
     const v = $('verLine'); if (v) v.textContent = 'Version ' + GAME_VERSION + (this.installed() ? ' · installée' : '');

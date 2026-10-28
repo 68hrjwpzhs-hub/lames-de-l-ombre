@@ -141,7 +141,7 @@ function drawFighter(g, f, opts = {}) {
   if (opts.shadowOnly) { g.restore(); return; }
   // bras libre, cape, jambes, jupe, tronc, tête
   if (S.race === 'drac') drawTail(g, f, j, S, C);
-  drawArmS(g, S, j.bsh, j.bel, j.bwr, d, C, true); drawHand(g, j.bwr, Math.atan2(j.bwr[1] - j.bel[1], j.bwr[0] - j.bel[0]), S.skin, C, S.race === 'drac');
+  drawArmS(g, S, j.bsh, j.bel, j.bwr, d, C, true); drawHand(g, j.bwr, Math.atan2(j.bwr[1] - j.bel[1], j.bwr[0] - j.bel[0]), S.skin, C, S.race === 'drac'); if (f.offhand && typeof drawOffhand === 'function') drawOffhand(g, f, j, C);
   if (S.style !== 'rodeur') drawCape(g, f, j, S, C);
   drawLegS(g, S, j.bl, d, C, false); drawLegS(g, S, j.fl, d, C, true);
   drawSkirt(g, f, j, S, C);

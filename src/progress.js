@@ -82,7 +82,7 @@ const SaveIO = {
   crc(str) { let c, crc = 0 ^ -1; for (let i = 0; i < str.length; i++) { c = (crc ^ str.charCodeAt(i)) & 0xff; for (let k = 0; k < 8; k++) c = c & 1 ? (c >>> 1) ^ 0xEDB88320 : c >>> 1; crc = (crc >>> 8) ^ c; } return ((crc ^ -1) >>> 0).toString(16).padStart(8, '0'); },
   b64e(s) { const u = new TextEncoder().encode(s); let b = ''; for (let i = 0; i < u.length; i += 8192) b += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); return btoa(b).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
   b64d(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const b = atob(s), u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return new TextDecoder().decode(u); },
-  pack() { const o = { fmt: 1, at: new Date().toISOString(), save: Save.data, settings: store.get('ct2d.settings', {}), record: store.get('ct2d.record', { w: 0, l: 0 }) }; const j = JSON.stringify(o), p = this.b64e(j); return 'LDO1.' + p + '.' + this.crc(p); },
+  pack() { const o = { fmt: 1, at: new Date().toISOString(), save: Save.data, settings: store.get('ct2d.settings', {}), extra: { v2opts: store.get('ct2d.v2opts', null), a11y2: store.get('ct2d.a11y2', null), lang: store.get('ct2d.lang', null) }, record: store.get('ct2d.record', { w: 0, l: 0 }) }; const j = JSON.stringify(o), p = this.b64e(j); return 'LDO1.' + p + '.' + this.crc(p); },
   unpack(code) {
     const c = (code || '').replace(/\s+/g, ''), m = /LDO1\.([A-Za-z0-9_-]+)\.([0-9A-Za-z]+)/.exec(c);
     if (!m) throw new Error(c.includes('LDO1') ? 'Code incomplet ou abîmé : recopiez-le en entier.' : 'Ce n\'est pas un code de sauvegarde (il commence par LDO1).');
@@ -93,7 +93,7 @@ const SaveIO = {
   apply(o) {
     store.set('ct2d.save.backup', { at: new Date().toISOString(), save: Save.data }); // l'ancienne partie est gardée de côté
     Save.data = Object.assign(Save.fresh(), JSON.parse(JSON.stringify(o.save))); Save.migrate(); Market.ensure(); applyAvatar(); Save.persist();
-    if (o.settings) store.set('ct2d.settings', o.settings); if (o.record) { store.set('ct2d.record', o.record); G.record = o.record; }
+    if (o.settings) store.set('ct2d.settings', o.settings); if (o.extra) { for (const [k, v] of [['ct2d.v2opts', o.extra.v2opts], ['ct2d.a11y2', o.extra.a11y2], ['ct2d.lang', o.extra.lang]]) if (v != null) store.set(k, v); if (typeof Controls !== 'undefined') Controls.load(); if (typeof A11y !== 'undefined') { A11y.load(); A11y.refreshUI(); } } // réglages 2.0 if (o.record) { store.set('ct2d.record', o.record); G.record = o.record; }
     Career.refresh();
   },
   init() {

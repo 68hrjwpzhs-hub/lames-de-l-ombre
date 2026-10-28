@@ -12,7 +12,7 @@ const G = {
     this.p.reset(300); this.e.reset(660);
     this.ai = new AI(this.e, this.p, 'duelliste'); this.demoAI = new AI(this.p, this.e, 'duelliste');
     this.resize(); addEventListener('resize', () => this.resize());
-    Paint.init(); Input.init(); this.ui(); Perf.init(); PWA.init(); Replay.init(); Career.init(); Codex.init(); Manuscrit.init(); Menu.init(); Run.init(); Story.init(); Creator.init(); Music.init(); Music.play('menu'); this.last = performance.now(); this.acc = 0;
+    Paint.init(); Input.init(); this.ui(); Perf.init(); PWA.init(); Replay.init(); Career.init(); Codex.init(); Manuscrit.init(); Menu.init(); Run.init(); Story.init(); V2.init(); Creator.init(); Music.init(); Music.play('menu'); this.last = performance.now(); this.acc = 0;
     requestAnimationFrame(t => this.frame(t));
   },
   resize() {
@@ -96,14 +96,14 @@ const G = {
     const rdt = Math.min(.1, (now - this.last) / 1000); this.last = now;
     if (this.state === 'replay') { Replay.update(rdt); if (this.state === 'replay') { Replay.render(rdt); return; } }
     if (this.state !== 'pause') {
-      let scale = this.state === 'demo' ? Demo.speed() : 1;
+      let scale = (this.state === 'demo' ? Demo.speed() : 1) * (this.state === 'fight' || this.state === 'round' ? (this.timeScale || 1) : 1); // duel lent
       if (this.hitStop > 0) { this.hitStop -= rdt; scale *= .08; } else if (this.slowT > 0) { this.slowT -= rdt; scale *= .4; }
       this.acc += rdt * scale; let n = 0;
       while (this.acc >= 1 / 120 && n++ < 12) { this.acc -= 1 / 120; this.step(1 / 120); }
       this.nSteps = Math.min(n, 12);
     }
     const r0 = performance.now(); this.render(rdt); const cpu = performance.now() - r0;
-    if (this.state === 'fight' && Paint.on) Paint.measure(rdt * 1000); // le régulateur juge le vrai temps entre deux images
+    if (this.state === 'fight' && Paint.on) Paint.measure(rdt * 1000); if (typeof GL !== 'undefined') GL.watch(rdt * 1000); // le régulateur juge le vrai temps entre deux images
     Perf.sample(rdt * 1000, cpu, this.state === 'pause' ? 2 : (this.nSteps || 0));
   },
   simulate(sec) { const s = this.silent; this.silent = true; for (let i = 0; i < sec * 120; i++) { this.hitStop = 0; this.slowT = 0; this.step(1 / 120); if (this.state === 'over') break; } this.silent = s; },
@@ -278,7 +278,7 @@ const G = {
     this.event('block', info);
   },
   breakGuard(a, d, bp, info) {
-    Depth.hitFx(bp, 'break');
+    Depth.hitFx(bp, 'break'); a.stats.gbreaks = (a.stats.gbreaks || 0) + 1;
     d.guarding = false; d.setState('broken', .78); d.hp = Math.max(1, d.hp - 4 - (heroOf(a) && heroOf(a).breakDmg || 0)); d.kb = a.dir * 60;
     this.spark(bp, 26, '#ffb070'); this.ring(bp, '#ffb070', 200); Snd.crack(); this.shake = 9; this.hitStop = .07; this.zoom = .04;
     this.say('Garde brisée', [d.x, GROUND - 222], '#f0b37c', 22); this.sfx('KRAK !', bp, '#ffb84a', 38);
@@ -503,7 +503,8 @@ const G = {
       glow(g, fx, fy, 60 * (1 - u * .5), 'rgba(255,230,190,A)', a * .8); g.restore(); }
     Depth.drawImpact(g);
     g.restore();
-    if (Paint.on) Paint.finish(g); else if (Paint.cssOk) $('vig').hidden = true;
+    if (typeof GL !== 'undefined' && GL.on && GL.capture(this.cv, cam)) { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, this.cv.width, this.cv.height); g.setTransform(this.scale, 0, 0, this.scale, 0, 0); } // 3.0 : le monde part à la carte graphique, le canevas 2D ne garde que le HUD
+    else if (Paint.on) Paint.finish(g); else if (Paint.cssOk) $('vig').hidden = true;
     if (this.cine > 0) { const u = Math.min(1, this.cine / .3, (1.8 - this.cine) / .2), bh = 46 * clamp(u, 0, 1); g.fillStyle = '#000'; g.fillRect(0, 0, W, bh); g.fillRect(0, H - bh, W, bh); }
     if (this.flash > 0) { this.flash -= rdt; g.fillStyle = `rgba(255,248,230,${clamp(this.flash, 0, .3)})`; g.fillRect(0, 0, W, H); }
     if (this.state === 'menu') { g.fillStyle = 'rgba(0,0,0,.15)'; g.fillRect(0, 0, W, H); }
@@ -541,10 +542,11 @@ const G = {
     if (this.pw === 'stricte' || (this.state !== 'fight' && this.state !== 'demo')) return;
     const c = this.cueInfo(); if (!c) return; const a = this.e, M = c.M, inWin = c.inWin, rem = c.rem, win = c.win, k = inWin ? 1 : 1 - (rem - win) / .14, J = M.claw ? { tip: a.J.bwr } : a.J, p = J.tip, pulse = .75 + .25 * Math.sin(this.time * 40);
     g.save(); g.globalCompositeOperation = 'lighter';
-    const r = (inWin ? 30 : 16) * (inWin ? pulse : 1), q = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], r); q.addColorStop(0, `rgba(255,80,60,${.95 * k})`); q.addColorStop(.35, `rgba(255,40,30,${.55 * k})`); q.addColorStop(1, 'rgba(255,0,0,0)');
+    const r = (inWin ? 30 : 16) * (inWin ? pulse : 1), q = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], r); const CC = CFG.cvd ? ['90,200,255', '40,150,255', '0,120,255', '90,210,255'] : ['255,80,60', '255,40,30', '255,0,0', '255,90,70']; // mode daltonien : bleu clair
+    q.addColorStop(0, `rgba(${CC[0]},${.95 * k})`); q.addColorStop(.35, `rgba(${CC[1]},${.55 * k})`); q.addColorStop(1, `rgba(${CC[2]},0)`);
     g.fillStyle = q; g.beginPath(); g.arc(p[0], p[1], r, 0, 7); g.fill();
     if (CFG.cueShape && inWin && a.J) { const hx = a.J.head[0], hy = a.J.head[1] - 46; g.globalCompositeOperation = 'source-over'; g.fillStyle = '#fff'; g.strokeStyle = '#111'; g.lineWidth = 3; g.beginPath(); g.moveTo(hx, hy - 16); g.lineTo(hx + 13, hy); g.lineTo(hx, hy + 16); g.lineTo(hx - 13, hy); g.closePath(); g.fill(); g.stroke(); g.fillStyle = '#111'; g.font = '900 20px sans-serif'; g.textAlign = 'center'; g.fillText('!', hx, hy + 7); g.globalCompositeOperation = 'lighter'; } // signal de forme (lisible sans les couleurs)
-    if (!M.claw && inWin) { g.strokeStyle = `rgba(255,90,70,${.7 * pulse})`; g.lineWidth = 2.4; g.beginPath(); g.moveTo(lerp(a.J.wr[0], p[0], .72), lerp(a.J.wr[1], p[1], .72)); g.lineTo(p[0], p[1]); g.stroke(); }
+    if (!M.claw && inWin) { g.strokeStyle = `rgba(${CC[3]},${.7 * pulse})`; g.lineWidth = 2.4; g.beginPath(); g.moveTo(lerp(a.J.wr[0], p[0], .72), lerp(a.J.wr[1], p[1], .72)); g.lineTo(p[0], p[1]); g.stroke(); }
     g.restore();
   },
   // garde : petit écu au-dessus du combattant ; cercle clair pendant la fenêtre de parade parfaite (joueur)
