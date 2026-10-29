@@ -2,9 +2,15 @@
 
 Duels à la rapière dans le Paris de 1633, avec une touche de fantastique. Jeu web en 2D (Canvas), pensé pour l'iPhone en paysage et installable comme une application (PWA).
 
-Version 4.0.0 (notes : `notes/v4.0.md`, `notes/v3.0.md`, `notes/v2.0.md`). Français et anglais. Moteur WebGL (lumière, halo, reflets) avec retour automatique au rendu 2D.
+Version 7.0.0 « Le Tournoi du Roi » (notes : `notes/v7.0.md`, `notes/v6.0.md`, `notes/v5.0.md`, `notes/v4.0.md`, `notes/v3.0.md`, `notes/v2.0.md`). Français et anglais. Moteur WebGL (lumière, halo, reflets) avec retour automatique au rendu 2D.
 
 ## Contenu du jeu
+
+- **Le Tournoi du Roi (7.0)** : un prologue jouable, des coups plus sensibles, six adversaires à signature, 30 épreuves à étoiles, une garde-robe et huit rapières légendaires, trois familles d'armes (épée de cour, rapière longue, sabre), le Tournoi du Roi et son générique, un journal à trois objectifs et la Renommée, une musique par ville, le Livre V « La Couronne de fer », quatre nouveaux lieux, deux héros (Oriane la Main-Gauche, Barthélemy l'Aveugle), la carrière de 1633 à 1640 et une version installable plus légère.
+
+- **Le Royaume (6.0)** : des rivaux qui reviennent (cicatrices, titres, coups appris), un Paris vivant (heure, événements, quartiers, personnages), des conséquences (blessures durables, chirurgien, arrestation, premier sang ou outrance), trois écoles d'escrime, désarmement, pommeau, saisie et combat sur deux hauteurs, la carte d'Europe (Madrid, Venise, Londres), le Livre IV « Le Carnaval de Venise », la Nuit de Paris 2.0 (dix niveaux, chemins, pactes) et une lumière retravaillée (flambeaux, ombres, rayons, météo, palette par ville).
+
+- **Interface 5.0** : un accueil à trois choix (Continuer, Paris, Duel rapide), la carte gravée de Paris où chaque mode est un sceau de cire, un bandeau de combat épuré. L'ancien menu reste accessible (« registre »), et l'interface classique se rétablit dans les Options.
 
 - **Combat**
   - Estocade, fente, coups bas et hauts, feintes, battements, prise de fer.
