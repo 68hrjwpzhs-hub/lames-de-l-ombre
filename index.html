@@ -2585,7 +2585,7 @@ const Perf = {
   },
 };
 // =============================== version installable (PWA) : hors ligne, mise à jour proposée au menu seulement ===============================
-const GAME_VERSION = '7.0.0';
+const GAME_VERSION = '7.0.1';
 const PWA = {
   init() {
     const v = $('verLine'); if (v) v.textContent = 'Version ' + GAME_VERSION + (this.installed() ? ' · installée' : '');
@@ -8659,7 +8659,7 @@ const Combat6 = {
   disarm(f, why) {
     if (!f || f.disarmed || f.state === 'ko' || !f.J || !this.on()) return; f.disarmed = true; f.guarding = false; f.pickT = 0;
     const L = (f.rapier && f.rapier.len) || 110, cx = clamp(f.x + f.dir * 90, 70, W - 70);
-    G.drops = G.drops || []; G.drops.push({ f, cx, cy: GROUND - 5, L, ang: f.dir > 0 ? .08 : Math.PI - .08, mid: true });
+    G.drops = G.drops || []; G.drops.push({ f, cx, cy: GROUND - 5, L, ang: f.dir > 0 ? 0 : Math.PI, mid: true, rest: true, vx: 0, vy: 0, va: 0 }); // posée à plat : la chute des rapières (game.js) ne la reprend pas
     G.say(why || 'Désarmé !', [f.x, GROUND - 250], f.isPlayer ? '#f0a48c' : '#ffd76a', 24); Snd.clang(false); G.shake = 6; G.hitStop = .06; f.stats.disarmed = (f.stats.disarmed || 0) + 1;
   },
   dropOf(f) { return (G.drops || []).find(d => d.mid && d.f === f); },

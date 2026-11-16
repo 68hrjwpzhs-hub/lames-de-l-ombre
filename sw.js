@@ -1,5 +1,5 @@
 // service worker : tout le jeu en cache (hors ligne) ; une nouvelle version attend que le joueur la demande au menu
-const CACHE = 'ldo-7.0.0';
+const CACHE = 'ldo-7.0.1';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
 const DECORS = ["./decors/academia.webp", "./decors/alcazar.webp", "./decors/arsenal.webp", "./decors/auberge.webp", "./decors/bastion.webp", "./decors/canal.webp", "./decors/chatelet.webp", "./decors/cloitre.webp", "./decors/eglise.webp", "./decors/galerie.webp", "./decors/loggia.webp", "./decors/navire.webp", "./decors/nuit.webp", "./decors/palais.webp", "./decors/plaza.webp", "./decors/pre.webp", "./decors/salle.webp", "./decors/toits.webp"]; // chargés en arrière-plan, sans retarder l'installation
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).then(() => { c.addAll(DECORS).catch(() => {}); }))); });
